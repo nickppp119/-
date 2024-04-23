@@ -1,8 +1,11 @@
 import toast from 'react-hot-toast';
 
 
+const IP = process.env.REACT_APP_IP;
+const PORT = process.env.REACT_APP_PORT;
+
 const login = (username, password, userState, navigate) => {
-  const url = 'http://127.0.0.1:443/api/user/login';
+  const url = `http://${IP}:${PORT}/api/user/login`;
 
   const requestOptions = {
     method: 'POST',
@@ -18,7 +21,7 @@ const login = (username, password, userState, navigate) => {
   fetch(url, requestOptions)
     .then(async (response) => {
       const data = await response.json();
-  
+
       if (response.ok) {
         userState.setValue(data.detail);
 
@@ -29,8 +32,60 @@ const login = (username, password, userState, navigate) => {
     });
 }
 
+const create = (username, password, role, token) => {
+  const url = `http://${IP}:${PORT}/api/user/create`;
+
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      'username': username,
+      'password': password,
+      'role': role
+    })
+  };
+
+  fetch(url, requestOptions).then(async (response) => {
+    const data = await response.json();
+
+    if (response.ok) {
+      toast.success(data.detail);
+    } else {
+      toast.error(data.detail);
+    }
+  });
+}
+
+const remove = (username, token) => {
+  const url = `http://${IP}:${PORT}/api/user/remove`;
+
+  const requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      'username': username,
+    })
+  };
+
+  fetch(url, requestOptions).then(async (response) => {
+    const data = await response.json();
+
+    if (response.ok) {
+      toast.success(data.detail);
+    } else {
+      toast.error(data.detail);
+    }
+  });
+}
+
 const update = (username, password, role, token) => {
-  const url = 'http://127.0.0.1:443/api/user/update';
+  const url = `http://${IP}:${PORT}/api/user/update`;
 
   const requestOptions = {
     method: 'PUT',
@@ -55,62 +110,12 @@ const update = (username, password, role, token) => {
     }
   });
 }
-const create = (username, password, role, token) => {
-    const url = 'http://127.0.0.1:443/api/user/create';
-  
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        'username': username,
-        'password': password,
-        'role': role
-      })
-    };
-  
-    fetch(url, requestOptions).then(async (response) => {
-      const data = await response.json();
-  
-      if (response.ok) {
-        toast.success(data.detail);
-      } else {
-        toast.error(data.detail);
-      }
-    });
-  }
-  const remove = (username, token) => {
-    const url = 'http://127.0.0.1:443/api/user/delete';
-  
-    const requestOptions = {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        'username': username,
-      })
-    };
-  
-    fetch(url, requestOptions).then(async (response) => {
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success(data.detail);
-      } else {
-        toast.error(data.detail);
-      }
-    });
-  }
 
 const user = {
   login,
-  update,
   create,
-  remove
+  remove,
+  update
 }
 
 export default user;

@@ -1,20 +1,24 @@
 import toast from 'react-hot-toast';
 
 
-const update = (index, title, content, role, token) => {
-  const url = 'http://127.0.0.1:443/api/event/update';
+const IP = process.env.REACT_APP_IP;
+const PORT = process.env.REACT_APP_PORT;
+
+const create = (title, content, token) => {
+  const url = `http://${IP}:${PORT}/api/event/create`;
+
+
+  console.log(title, content, token);
 
   const requestOptions = {
-    method: 'PUT',
+    method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: new URLSearchParams({
-      'index': index,
       'title': title,
-      'content': content,
-      'role': role
+      'content': content
     })
   };
 
@@ -29,61 +33,64 @@ const update = (index, title, content, role, token) => {
   });
 }
 
-const create = (title, content, role, token) => {
-    const url = 'http://127.0.0.1:443/api/event/create';
-  
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        'title': title,
-        'content': content,
-        'role': role
-      })
-    };
-  
-    fetch(url, requestOptions).then(async (response) => {
-      const data = await response.json();
+const remove = (id, token) => {
+  const url = `http://${IP}:${PORT}/api/event/remove`;
 
-      if (response.ok) {
-        toast.success(data.detail);
-      } else {
-        toast.error(data.detail);
-      }
-    });
-  }
-  const remove = (index, token) => {
-    const url = 'http://127.0.0.1:443/api/event/remove';
-  
-    const requestOptions = {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        'index': index
-      })
-    };
-  
-    fetch(url, requestOptions).then(async (response) => {
-      const data = await response.json();
+  const requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      'event_id': id
+    })
+  };
 
-      if (response.ok) {
-        toast.success(data.detail);
-      } else {
-        toast.error(data.detail);
-      }
-    });
-  }
+  fetch(url, requestOptions).then(async (response) => {
+    const data = await response.json();
+
+    if (response.ok) {
+      toast.success(data.detail);
+    } else {
+      toast.error(data.detail);
+    }
+  });
+}
+
+const update = (id, title, content, token) => {
+  const url = `http://${IP}:${PORT}/api/event/update`;
+
+  console.log(id, title, content, token);
+
+  const requestOptions = {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      'event_id': id,
+      'title': title,
+      'content': content
+    })
+  };
+
+  fetch(url, requestOptions).then(async (response) => {
+    const data = await response.json();
+
+    if (response.ok) {
+      toast.success(data.detail);
+    } else {
+      toast.error(data.detail);
+    }
+  });
+}
 
 const event = {
-  update,
   create,
-  remove
+  remove,
+  update
 }
 
 export default event;

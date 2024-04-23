@@ -59,7 +59,7 @@ const PageMenu = ({ children }) => {
       >
         <SpeedDial
           ariaLabel="PageMenu"
-          sx={{ position: 'absolute', bottom: 16, right: 16, }}
+          sx={{ position: 'absolute', bottom: 16, right: 16 }}
           icon={
             <SpeedDialIcon
               icon={<FaBars style={{  fontSize: '24px' }} />}
@@ -75,7 +75,7 @@ const PageMenu = ({ children }) => {
               key={page.name}
               icon={page.icon}
               tooltipTitle={page.name}
-              sx={{ fontSize: '28px' }}
+              sx={{ fontSize: '28px', color: '#FFF' }}
               onClick={() => {
                 if (page === '登出') {
                   handleLogout();

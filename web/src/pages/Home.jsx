@@ -1,10 +1,7 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -50,10 +47,8 @@ const Label = ({ componentName, valueType, isProOnly }) => {
 }
 
 const Home = () => {
-  const navigate = useNavigate();
   return (
     <>
-      <Button onClick={() => navigate('user')}>使用者設定</Button>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer
           components={[

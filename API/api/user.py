@@ -4,7 +4,7 @@ from functions import user, token
 
 router = APIRouter()
 
-@router.post('/login')
+@router.post('/login', tags=['使用者'], name='登入')
 async def login (username = Form(...), password = Form(...)):
   if await user.check(username):
     results = await user.search(username)
@@ -21,10 +21,18 @@ async def login (username = Form(...), password = Form(...)):
   else:
     raise HTTPException(400, '使用者不存在!')
 
-@router.post('/create')
+@router.get('/search', tags=['使用者'], name='取得所有使用者')
+async def search_all():
+  return await user.search()
+
+@router.get('/search/{username}', tags=['使用者'], name='取得特定使用者')
+async def search(username = ''):
+  return await user.search(username)
+
+@router.post('/create', tags=['使用者'], name='創建使用者')
 async def create(
   token_payload: dict = Depends(token.get),
-  username = Form(...), 
+  username = Form(...),
   password = Form(...),
   role = Form(...)
 ):
@@ -35,16 +43,12 @@ async def create(
 
   if await user.check(username):
     raise HTTPException(400, '使用者已存在!')
-  
+
   await user.create(username, password, role)
 
-  raise HTTPException(200, '新增成功!')
+  raise HTTPException(200, '創建成功!')
 
-@router.get('/search/{username}')
-async def search(username = ''):
-  return await user.search(username)
-
-@router.delete('/remove')
+@router.delete('/remove', tags=['使用者'], name='刪除使用者')
 async def remove(token_payload: dict = Depends(token.get), username = Form(...)):
   user_role = token_payload['role']
 
@@ -58,7 +62,7 @@ async def remove(token_payload: dict = Depends(token.get), username = Form(...))
 
   raise HTTPException(200, '刪除成功!')
 
-@router.put('/update')
+@router.put('/update', tags=['使用者'], name='編輯使用者')
 async def update(token_payload: dict = Depends(token.get), username = Form(...), password = Form(...), role = Form(...)):
   if not await user.check(username):
     raise HTTPException(400, '使用者不存在!')

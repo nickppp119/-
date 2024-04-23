@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DB_IP = os.getenv('DB_IP')
+DB_HOST = os.getenv('DB_HOST')
 DB_PORT = os.getenv('DB_PORT')
 
-client = pymongo.MongoClient([f'{DB_IP}:{DB_PORT}'])
+client = pymongo.MongoClient([f'{DB_HOST}:{DB_PORT}'])
 
 db = client['database']
 
@@ -52,4 +52,3 @@ async def delete(collection_name: str, query: dict):
 
   collection = db[collection_name]
   collection.delete_one(query)
-  

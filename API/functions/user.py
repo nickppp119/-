@@ -16,8 +16,8 @@ async def check(username):
 async def create(username, password, role):
   await mongodb.insert('user', {
     'username': username,
-    'role': role,
-    'password': password
+    'password': password,
+    'role': role
   })
 
 async def remove(username):
@@ -29,9 +29,9 @@ async def update(username, password, role):
   await mongodb.update('user', {
       'username': username
     }, {
-      '$set': { 
-        'role': role,
-        'password': password
+      '$set': {
+        'password': password,
+        'role': role
       }
     }
   )
