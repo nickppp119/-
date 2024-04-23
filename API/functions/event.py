@@ -13,6 +13,28 @@ async def search(user_role, event_id = ''):
 
   return  await mongodb.find('event', search_filter)
 
+async def search_date(user_role, event_date):
+  search_filter = { }
+
+  date = str(event_date).split('-')
+  date = [int(d) for d in date]
+  start_date = datetime(date[0], date[1], date[2], 0, 0, 0)
+  end_date = datetime(date[0], date[1], date[2], 23, 59, 59)
+
+  search_filter = { }
+
+  if user_role < 2:
+    search_filter.update({ 'role': user_role })
+
+  search_filter.update({
+    'date': {
+      '$gte': start_date,
+      '$lte': end_date
+    }
+  })
+
+  return await mongodb.find('event', search_filter)
+
 async def check(event_id):
   results = await mongodb.find('event', {
     'id': event_id

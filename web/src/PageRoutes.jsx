@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import LoadingScreen from './components/LoadingScreen';
 import { useRoutes } from 'react-router-dom';
+import UserGuard from './components/Authentication/UserGuard';
 
 
 const loadable = (Component) => (props) => (
@@ -23,24 +24,24 @@ const PageRoutes = () => {
   const EventRemove = loadable(lazy(() => import('./pages/Event/Remove')));
 
   const routes = useRoutes([
-    { exact: true, path: '/', element: <Home /> },
+    { exact: true, path: '/', element: <UserGuard><Home /></UserGuard> },
     { path: '/login', element: <Login /> },
     {
       path: '/user',
       children: [
-        { path: '', element: <UserHome /> },
-        { path: 'create', element: <UserCreate /> },
-        { path: 'update', element: <UserUpdate /> },
-        { path: 'remove', element: <UserRemove /> }
+        { path: '', element: <UserGuard><UserHome /></UserGuard> },
+        { path: 'create', element: <UserGuard><UserCreate /></UserGuard> },
+        { path: 'update', element: <UserGuard><UserUpdate /></UserGuard> },
+        { path: 'remove', element: <UserGuard><UserRemove /></UserGuard> }
       ]
     },
     {
       path: '/event',
       children: [
-        { path: '', element: <EventHome /> },
-        { path: 'create', element: <EventCreate /> },
-        { path: 'update', element: <EventUpdate /> },
-        { path: 'remove', element: <EventRemove /> }
+        { path: '', element: <UserGuard><EventHome /></UserGuard> },
+        { path: 'create', element: <UserGuard><EventCreate /></UserGuard> },
+        { path: 'update', element: <UserGuard><EventUpdate /></UserGuard> },
+        { path: 'remove', element: <UserGuard><EventRemove /></UserGuard> }
       ]
     },
     { path: '*', element: <Error /> }

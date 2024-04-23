@@ -1,7 +1,7 @@
 import { Toaster } from 'react-hot-toast';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { zhHK as pickerZhHK } from '@mui/x-date-pickers/locales';
 import { AuthProvider } from './context/AuthContext';
-import PageMenu from './components/Layouts/PageMenu';
 import PageRoutes from './PageRoutes';
 
 
@@ -16,16 +16,15 @@ const theme = createTheme({
   palette: {
     mode: 'dark'
   },
+  pickerZhHK
 },
 );
 
 const App = () => (
   <ThemeProvider theme={theme}>
     <AuthProvider>
-      <PageMenu>
-        <Toaster />
-        <PageRoutes />
-      </PageMenu>
+      <Toaster />
+      <PageRoutes />
     </AuthProvider>
   </ThemeProvider>
 );

@@ -1,44 +1,80 @@
-import toast from 'react-hot-toast';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
+import InputLabel from '@mui/material/InputLabel';
 import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
 import { useAuthContext } from '../../context/AuthContext';
 import userAPI from '../../api/user';
+import roleAPI from '../../api/role';
 
 
 const Update = () => {
   const { userState } = useAuthContext();
 
+  const [username, setUsername] = useState('');
+  const [userList, setUserList] = useState([]);
+  const [role, setRole] = useState('');
+  const [roleList, setRoleList] = useState([]);
+
   const update = (event) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-    const username = data.get('username');
-    const password1 = data.get('password1');
-    const password2 = data.get('password2');
-    const role = data.get('role');
+    const password = data.get('password');
 
-    if (username && password1 && role && password2) {
-      if (password1 === password2) {
-        userAPI.update(username, password1, role, userState.value.token);
-      } else {
-        toast.error('密碼不相同');
-      }
+    if (username && password && role) {
+      const level = (role === '教師' || role === '看護') ? 1 : 2;
+
+      userAPI.update(username, password, level, userState.value.token);
     }
   }
+
+  useEffect(() => {
+    userAPI.search(setUserList, userState.value.username, userState.value.token);
+    roleAPI.search(setRoleList);
+  }, []);
 
   return (
     <Box component="form" onSubmit={update} noValidate>
       <Stack spacing={2}>
-        <TextField id="username" name="username" label="帳號" variant="outlined" />
-        <TextField id="password1" name="password1" label="密碼" variant="outlined" />
-        <TextField id="password2" name="password2" label="驗證密碼" variant="outlined" />
-        <TextField id="role" name="role" label="職稱" variant="outlined" />
+        <FormControl fullWidth>
+          <InputLabel>帳號</InputLabel>
+          <Select
+            value={username}
+            label="帳號"
+            onChange={(event) => setUsername(event.target.value)}
+          >
+            {userList.map((item, index) => (
+              <MenuItem key={`user-${index}`} value={item.username}>
+                {item.username}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <TextField id="password" name="password" label="密碼" variant="outlined" />
+        <FormControl fullWidth>
+          <InputLabel>身份別</InputLabel>
+          <Select
+            value={role}
+            label="身份別"
+            onChange={(event) => setRole(event.target.value)}
+          >
+            {roleList.map((item, index) => (
+              <MenuItem key={`role-${index}`} value={item.name}>
+                {item.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <Button type="submit" variant="outlined" size="large">編輯使用者</Button>
       </Stack>
     </Box>
   );
 }
+
 
 export default Update;

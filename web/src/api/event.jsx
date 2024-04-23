@@ -1,4 +1,5 @@
 import toast from 'react-hot-toast';
+import dayjs from 'dayjs';
 
 
 const IP = process.env.REACT_APP_IP;
@@ -6,9 +7,6 @@ const PORT = process.env.REACT_APP_PORT;
 
 const create = (title, content, token) => {
   const url = `http://${IP}:${PORT}/api/event/create`;
-
-
-  console.log(title, content, token);
 
   const requestOptions = {
     method: 'POST',
@@ -61,8 +59,6 @@ const remove = (id, token) => {
 const update = (id, title, content, token) => {
   const url = `http://${IP}:${PORT}/api/event/update`;
 
-  console.log(id, title, content, token);
-
   const requestOptions = {
     method: 'PUT',
     headers: {
@@ -87,10 +83,33 @@ const update = (id, title, content, token) => {
   });
 }
 
+const search = (date, token, setEventList) => {
+  const url = `http://${IP}:${PORT}/api/event/search/date/${date}`;
+
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  fetch(url, requestOptions).then(async (response) => {
+    const data = await response.json();
+
+    if (response.ok) {
+      data.map((item) => item.date = dayjs(date).format('YYYY-MM-DD'))
+      setEventList(data);
+    } else {
+      toast.error(data.detail);
+    }
+  });
+}
+
 const event = {
   create,
   remove,
-  update
+  update,
+  search
 }
 
 export default event;

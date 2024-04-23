@@ -111,11 +111,35 @@ const update = (username, password, role, token) => {
   });
 }
 
+const search = (setUserList, username, token) => {
+  const url = `http://${IP}:${PORT}/api/user/search`;
+
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  fetch(url, requestOptions).then(async (response) => {
+    const data = await response.json();
+
+    if (response.ok) {
+      const newData = data.filter((item) => item.username !== username);
+
+      setUserList(newData);
+    } else {
+      toast.error(data.detail);
+    }
+  });
+}
+
 const user = {
   login,
   create,
   remove,
-  update
+  update,
+  search
 }
 
 export default user;

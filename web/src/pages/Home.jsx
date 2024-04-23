@@ -1,80 +1,48 @@
-import { styled } from '@mui/material/styles';
-import Tooltip from '@mui/material/Tooltip';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { useState } from 'react';
+import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import { useAuthContext } from '../context/AuthContext';
+import eventAPI from '../api/event';
 
-
-const ProSpan = styled('span')({
-  display: 'inline-block',
-  height: '1em',
-  width: '1em',
-  verticalAlign: 'middle',
-  marginLeft: '0.3em',
-  marginBottom: '0.08em',
-  backgroundSize: 'contain',
-  backgroundRepeat: 'no-repeat',
-  backgroundImage: 'url(https://mui.com/static/x/pro.svg)',
-});
-
-const Label = ({ componentName, valueType, isProOnly }) => {
-  const content = (
-    <span>
-      <strong>{componentName}</strong> for {valueType} editing
-    </span>
-  );
-
-  if (isProOnly) {
-    return (
-      <Stack direction="row" spacing={0.5} component="span">
-        <Tooltip title="Included on Pro package">
-          <a
-            href="https://mui.com/x/introduction/licensing/#pro-plan"
-            aria-label="Included on Pro package"
-          >
-            <ProSpan />
-          </a>
-        </Tooltip>
-        {content}
-      </Stack>
-    );
-  }
-
-  return content;
-}
 
 const Home = () => {
+  const { userState } = useAuthContext();
+
+  const [date, setDate] = useState(dayjs());
+  const [eventList, setEventList] = useState([]);
+
+  const selectDate = (newDate) => {
+    setDate(newDate);
+    eventAPI.search(dayjs(newDate).format('YYYY-MM-DD'), userState.value.token, setEventList);
+  }
+
   return (
-    <>
+    <Box width="100%">
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer
-          components={[
-            'DatePicker',
-            'TimePicker',
-            'DateTimePicker',
-            'DateRangePicker',
-          ]}
-        >
-          <DemoItem label={<Label componentName="DatePicker" valueType="date" />}>
-            <DatePicker />
-          </DemoItem>
-        </DemoContainer>
+        <DatePicker
+          value={date}
+          onChange={selectDate}
+        />
       </LocalizationProvider>
-      <Box
-        height={200}
-        width="50%"
-        my={4}
-        display="flex"
-        alignItems="center"
-        gap={4}
-        sx={{ border: '2px solid grey' }}
-      >
-        This Box uses MUI System props for quick customization.
-      </Box>
-    </>
+      <Grid container spacing={2} width="100%" mt={2}>
+        {eventList.map((item, index) => (
+          <Grid item key={`event-${index}`} xs={10} sm={6} md={4} sx={{
+            border: '2px solid #FFFFFF',
+            borderRadius: '4px',
+            m: 2
+          }}>
+            事件編號:{item.id}<br />
+            標題: {item.title}<br />
+            內容:{item.content}<br />
+            時間:{item.date}
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 }
 

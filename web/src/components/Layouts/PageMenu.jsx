@@ -89,7 +89,7 @@ const PageMenu = ({ children }) => {
             />
           ))}
         </SpeedDial>
-        <Box>
+        <Box width="100%">
           {children}
         </Box>
       </Stack>

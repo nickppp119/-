@@ -44,7 +44,7 @@ async def create(
   if await user.check(username):
     raise HTTPException(400, '使用者已存在!')
 
-  await user.create(username, password, role)
+  await user.create(username, password, int(role))
 
   raise HTTPException(200, '創建成功!')
 
@@ -67,6 +67,6 @@ async def update(token_payload: dict = Depends(token.get), username = Form(...),
   if not await user.check(username):
     raise HTTPException(400, '使用者不存在!')
 
-  await user.update(username, password, role)
+  await user.update(username, password, int(role))
 
   raise HTTPException(200, '修改成功!')

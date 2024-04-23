@@ -26,6 +26,17 @@ async def search(token_payload: dict = Depends(token.get), event_id = ''):
   else:
     raise HTTPException(404, '事件不存在或沒有權限!')
 
+@router.get('/search/date/{event_date}', tags=['事件'], name='搜尋事件')
+async def search_date(token_payload: dict = Depends(token.get), event_date = ''):
+  user_role = token_payload['role']
+
+  results =  await event.search_date(int(user_role), event_date)
+
+  if results != []:
+    return results
+  else:
+    raise HTTPException(404, '事件不存在或沒有權限!')
+
 @router.post('/create', tags=['事件'], name='建立事件')
 async def create(
   token_payload: dict = Depends(token.get),
