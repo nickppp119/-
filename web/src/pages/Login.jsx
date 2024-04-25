@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -24,13 +25,21 @@ const Login = () => {
   }
 
   return (
-    <Box component="form" onSubmit={login} noValidate>
-      <Stack spacing={2}>
-        <TextField id="username" name="username" label="帳號" variant="outlined" />
-        <TextField id="password" name="password" label="密碼" variant="outlined" />
-        <Button type="submit" variant="outlined" size="large">登入</Button>
-      </Stack>
-    </Box>
+    <Container fixed sx={{ width: '100%', height: '100%' }}>
+      <Box component="form" onSubmit={login} noValidate sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%'
+      }}>
+        <Stack spacing={2}>
+          <TextField id="username" name="username" label="帳號" variant="outlined" />
+          <TextField id="password" name="password" label="密碼" variant="outlined" />
+          <Button type="submit" variant="outlined" size="large">登入</Button>
+        </Stack>
+      </Box>
+    </Container>
   );
 }
 

@@ -36,7 +36,7 @@ const Update = () => {
   useEffect(() => {
     userAPI.search(setUserList, userState.value.username, userState.value.token);
     roleAPI.search(setRoleList);
-  }, []);
+  }, [userState.value.token, userState.value.username]);
 
   return (
     <Box component="form" onSubmit={update} noValidate>

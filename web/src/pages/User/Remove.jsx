@@ -26,7 +26,7 @@ const Remove = () => {
 
   useEffect(() => {
     userAPI.search(setUserList, userState.value.username, userState.value.token);
-  }, []);
+  }, [userState.value.token, userState.value.username]);
 
   return (
     <Box component="form" onSubmit={remove} noValidate>

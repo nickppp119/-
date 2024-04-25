@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -20,20 +21,31 @@ const Home = () => {
     eventAPI.search(dayjs(newDate).format('YYYY-MM-DD'), userState.value.token, setEventList);
   }
 
+  useEffect(() => {
+    eventAPI.search(dayjs().format('YYYY-MM-DD'), userState.value.token, setEventList);
+  }, [userState.value.token]);
+
   return (
     <Box width="100%">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          value={date}
-          onChange={selectDate}
-        />
-      </LocalizationProvider>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+        marginY: 8
+      }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="zh-cn">
+          <DatePicker
+            value={date}
+            onChange={selectDate}
+          />
+        </LocalizationProvider>
+      </Box>
       <Grid container spacing={2} width="100%" mt={2}>
         {eventList.map((item, index) => (
           <Grid item key={`event-${index}`} xs={10} sm={6} md={4} sx={{
             border: '2px solid #FFFFFF',
             borderRadius: '4px',
-            m: 2
+            p: 2
           }}>
             事件編號:{item.id}<br />
             標題: {item.title}<br />

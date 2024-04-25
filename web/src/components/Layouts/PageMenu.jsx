@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaBars, FaX, FaHouseChimney, FaUserGear, FaFolder, FaRightFromBracket } from 'react-icons/fa6';
+import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
@@ -56,14 +57,16 @@ const PageMenu = ({ children }) => {
         justifyContent="center"
         alignItems="stretch"
         p={4}
+        width="100%"
+        height="100%"
       >
         <SpeedDial
           ariaLabel="PageMenu"
           sx={{ position: 'absolute', bottom: 16, right: 16 }}
           icon={
             <SpeedDialIcon
-              icon={<FaBars style={{  fontSize: '24px' }} />}
-              openIcon={<FaX style={{  fontSize: '24px' }} />}
+              icon={<FaBars style={{ fontSize: '24px' }} />}
+              openIcon={<FaX style={{ fontSize: '24px' }} />}
             />
           }
           onClose={handleClose}
@@ -89,9 +92,9 @@ const PageMenu = ({ children }) => {
             />
           ))}
         </SpeedDial>
-        <Box width="100%">
+        <Container fixed sx={{ width: '100%', height: '100%' }}>
           {children}
-        </Box>
+        </Container>
       </Stack>
     </Box>
   );
