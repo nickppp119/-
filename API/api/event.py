@@ -49,15 +49,16 @@ async def create(
 
   raise HTTPException(200, '新增成功!')
 
-# E
 @router.delete('/remove', tags=['事件'], name='刪除事件')
 async def remove(token_payload: dict = Depends(token.get), event_id = Form(...)):
-  if not await event.check(event_id):
-    raise HTTPException(400, '事件不存在!')
+  user_role = token_payload['role']
+
+  if not await event.check(event_id, int(user_role)):
+    raise HTTPException(400, '事件不存在或沒有權限!')
 
   user_role = token_payload['role']
 
-  await event.remove(event_id)
+  await event.remove(event_id, int(user_role))
 
   raise HTTPException(200, '刪除成功!')
 
@@ -69,8 +70,10 @@ async def update(
   title = Form(...),
   content = Form(...)
 ):
-  if not await event.check(event_id):
-    raise HTTPException(400, '事件不存在!')
+  user_role = token_payload['role']
+
+  if not await event.check(event_id, int(user_role)):
+    raise HTTPException(400, '事件不存在或沒有權限!')
 
   user_role = token_payload['role']
 
