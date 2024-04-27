@@ -1,15 +1,15 @@
 import { Box, useTheme } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import { H1, H3 } from '../components/Typography';
 
 
 
-const ErrorPage= () => {
+const ErrorPage = () => {
   const theme = useTheme();
 
   return (
     <Box
       display="flex"
-      p={4}
       height="100%"
       alignItems="center"
       flexDirection="column"
@@ -22,17 +22,17 @@ const ErrorPage= () => {
           alt="Error 404"
         />
       </Box>
-      <h1
+      <H1
         fontSize={64}
         fontWeight={700}
         color="primary.main"
         mt={3}
       >
         Ooops... 404!
-      </h1>
-      <p color="text.disabled" fontWeight="500">
-        The page you requested could not be found.
-      </p>
+      </H1>
+      <H3 color="text.disabled" fontWeight="500" mt={2}>
+        無法找到你請求的頁面。
+      </H3>
 
       <NavLink
         to="/"
@@ -44,7 +44,7 @@ const ErrorPage= () => {
           color: theme.palette.primary.main
         }}
       >
-        Back to Home
+        返回首頁
       </NavLink>
     </Box>
   );

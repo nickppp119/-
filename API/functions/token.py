@@ -16,7 +16,7 @@ def generate (result: dict) -> str:
     'username': result['username'],
     'role': result['role']
   }
-  
+
   token = encode(payload, SECRET_KEY, algorithm='HS256')
 
   return token
@@ -31,4 +31,3 @@ def get (auth_header: str = Depends(oauth2_scheme)) -> dict:
     return payload
   except:
     raise HTTPException(422, 'Token 格式錯誤')
-  
