@@ -4,7 +4,7 @@ import { createContext, useState, useContext } from 'react';
 const AuthContext = createContext({
   userState: {
     value: {
-      name: null,
+      username: null,
       role: null,
       token: null
     },
@@ -15,14 +15,14 @@ const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({
-    name: null,
+    username: null,
     role: null,
     token: null
   });
 
   const handleLogout = () => {
     setUser({
-      name: null,
+      username: null,
       role: null,
       token: null
     });

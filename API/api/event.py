@@ -62,7 +62,6 @@ async def remove(token_payload: dict = Depends(token.get), event_id = Form(...))
 
   raise HTTPException(200, '刪除成功!')
 
-# E
 @router.put('/update', tags=['事件'], name='更新事件')
 async def update(
   token_payload: dict = Depends(token.get),

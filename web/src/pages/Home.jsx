@@ -45,12 +45,14 @@ const Home = () => {
           <Grid item key={`event-${index}`} xs={10} sm={6} md={4} sx={{
             border: '2px solid #FFFFFF',
             borderRadius: '4px',
-            p: 2
+            p: 2,
+            m: 2
           }}>
-            事件編號:{item.id}<br />
+            事件編號: {item.id}<br />
             標題: {item.title}<br />
-            內容:{item.content}<br />
-            時間:{item.date}
+            內容: {item.content}<br />
+            時間: {item.date}<br />
+            事件等級: {item.role}
           </Grid>
         ))}
       </Grid>
