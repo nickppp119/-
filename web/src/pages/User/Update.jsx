@@ -65,11 +65,17 @@ const Update = () => {
                 label="帳號"
                 onChange={(event) => setUsername(event.target.value)}
               >
-                {userList.map((item, index) => (
-                  <MenuItem key={`user-${index}`} value={item.username}>
-                    {item.username}
+                {(userList.length === 0) ? (
+                  <MenuItem key={`user-0`} value={null}>
+                    None
                   </MenuItem>
-                ))}
+                ) : (
+                  userList.map((item, index) => (
+                    <MenuItem key={`user-${index}`} value={item.username}>
+                      {item.username}
+                    </MenuItem>
+                  ))
+                )}
               </Select>
             </FormControl>
           )}
@@ -84,11 +90,17 @@ const Update = () => {
                 label="身份別"
                 onChange={(event) => setRole(event.target.value)}
               >
-                {roleList.map((item, index) => (
-                  <MenuItem key={`role-${index}`} value={item.name}>
-                    {item.name}
+                {(roleList.length === 0) ? (
+                  <MenuItem key={`role-0`} value={null}>
+                    None
                   </MenuItem>
-                ))}
+                ) : (
+                  roleList.map((item, index) => (
+                    <MenuItem key={`role-${index}`} value={item.name}>
+                      {item.name}
+                    </MenuItem>
+                  ))
+                )}
               </Select>
             </FormControl>
           )}

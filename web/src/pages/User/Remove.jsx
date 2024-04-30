@@ -52,11 +52,17 @@ const Remove = () => {
               label="帳號"
               onChange={(event) => setUsername(event.target.value)}
             >
-              {userList.map((item, index) => (
-                <MenuItem key={`user-${index}`} value={item.username}>
-                  {item.username}
+              {(userList.length === 0) ? (
+                <MenuItem key={`user-0`} value={null}>
+                  None
                 </MenuItem>
-              ))}
+              ) : (
+                userList.map((item, index) => (
+                  <MenuItem key={`user-${index}`} value={item.username}>
+                    {item.username}
+                  </MenuItem>
+                ))
+              )}
             </Select>
           </FormControl>
           <Button type="submit" variant="outlined" size="large">送出</Button>

@@ -62,11 +62,17 @@ const Create = () => {
               label="身份別"
               onChange={(event) => setRole(event.target.value)}
             >
-              {roleList.map((item, index) => (
-                <MenuItem key={`role-${index}`} value={item.username}>
-                  {item.username}
+              {(roleList.length === 0) ? (
+                <MenuItem key={`role-0`} value={null}>
+                  None
                 </MenuItem>
-              ))}
+              ) : (
+                roleList.map((item, index) => (
+                  <MenuItem key={`role-${index}`} value={item.name}>
+                    {item.name}
+                  </MenuItem>
+                ))
+              )}
             </Select>
           </FormControl>
           <Button type="submit" variant="outlined" size="large">送出</Button>
